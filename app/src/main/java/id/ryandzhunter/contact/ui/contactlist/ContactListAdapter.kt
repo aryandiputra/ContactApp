@@ -21,6 +21,9 @@ class ContactListAdapter(val data: List<Contact>) : RecyclerView.Adapter<Contact
             viewHolder.itemView.textIndexAlphabet.text = getLabel(position)
             viewHolder.itemView.textIndexAlphabet.visibility = View.VISIBLE
             viewHolder.itemView.imageStar.visibility = View.INVISIBLE
+        } else {
+            viewHolder.itemView.imageStar.visibility = View.INVISIBLE
+            viewHolder.itemView.textIndexAlphabet.visibility = View.INVISIBLE
         }
         viewHolder.itemView.textContactAlphabet.text = data[position].firstName.toUpperCase().get(0).toString()
         viewHolder.itemView.textName.text = data[position].firstName + " " + data[position].lastName
