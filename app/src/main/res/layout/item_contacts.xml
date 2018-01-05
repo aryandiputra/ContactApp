@@ -29,12 +29,14 @@
 
     <ImageView
         android:id="@+id/imageContact"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageStar"
-        app:layout_constraintStart_toEndOf="@+id/imageStar"
-        app:layout_constraintTop_toTopOf="@+id/imageStar" />
+        app:layout_constraintBottom_toBottomOf="@+id/textContactAlphabet"
+        app:layout_constraintStart_toStartOf="@+id/textContactAlphabet"
+        app:layout_constraintEnd_toEndOf="@+id/textContactAlphabet"
+        app:layout_constraintTop_toTopOf="@+id/textContactAlphabet"
+        android:background="@drawable/circle"/>
 
     <TextView
         android:id="@+id/textContactAlphabet"
@@ -42,6 +44,7 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:text="A"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageStar"
         app:layout_constraintStart_toEndOf="@+id/imageStar"

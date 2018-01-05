@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.item_contacts.view.*
 class ContactListAdapter(val data: List<Contact>) : RecyclerView.Adapter<ContactListAdapter.ContactListViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: ContactListViewHolder, position: Int) {
+
+        // set favorite and index
         if (position == 0 && data[position].favorite){
             viewHolder.itemView.imageStar.visibility = View.VISIBLE
             viewHolder.itemView.textIndexAlphabet.visibility = View.INVISIBLE
@@ -25,6 +27,7 @@ class ContactListAdapter(val data: List<Contact>) : RecyclerView.Adapter<Contact
             viewHolder.itemView.imageStar.visibility = View.INVISIBLE
             viewHolder.itemView.textIndexAlphabet.visibility = View.INVISIBLE
         }
+
         viewHolder.itemView.textContactAlphabet.text = data[position].firstName.toUpperCase().get(0).toString()
         viewHolder.itemView.textName.text = data[position].firstName + " " + data[position].lastName
     }

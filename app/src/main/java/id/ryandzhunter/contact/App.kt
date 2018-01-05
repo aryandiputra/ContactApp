@@ -3,7 +3,6 @@ package id.ryandzhunter.contact
 import android.app.Activity
 import android.app.Application
 import id.ryandzhunter.contact.di.component.AppComponent
-import com.facebook.drawee.backends.pipeline.Fresco
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -25,7 +24,6 @@ class App: Application(), HasActivityInjector {
         super.onCreate()
         appComponent = createComponent()
         appComponent.inject(this)
-        Fresco.initialize(this)
     }
 
     fun createComponent(): AppComponent {
