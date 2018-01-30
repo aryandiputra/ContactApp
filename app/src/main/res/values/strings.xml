@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Contact</string>
+    <string name="network_error_title">Network Error</string>
+    <string name="network_error_message">Unable to Connect Server</string>
+    <string name="ok">OK</string>
+    <string name="no_result">No Result</string>
 </resources>

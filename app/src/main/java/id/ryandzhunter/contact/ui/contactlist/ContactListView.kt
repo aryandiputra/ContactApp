@@ -1,14 +1,15 @@
 package id.ryandzhunter.contact.ui.contactlist
 
 import id.ryandzhunter.contact.base.BaseView
-import id.ryandzhunter.contact.model.Contact
+import id.ryandzhunter.contact.model.ContactRealm
 
 /**
  * Created by ryandzhunter on 1/3/17.
  */
 interface ContactListView : BaseView {
-    fun onSearchResponse(list: List<Contact>?)
+    fun onResponse(list: List<ContactRealm>?)
     fun showProgress()
     fun hideProgress()
-    fun noResult()
+    fun showNoResult()
+    fun hideNoResult()
 }

@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'realm-android'
+
 android {
     compileSdkVersion 27
     buildToolsVersion '26.0.3'
@@ -85,5 +87,11 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     kapt 'com.github.bumptech.glide:compiler:4.4.0'
+
+    // realm extension
+    implementation "com.github.vicpinm:krealmextensions:2.0.0"
+
+    // realm adapter
+    implementation 'io.realm:android-adapters:2.1.1'
 
 }

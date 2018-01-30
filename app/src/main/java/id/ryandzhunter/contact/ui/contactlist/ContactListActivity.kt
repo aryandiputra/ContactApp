@@ -1,9 +1,10 @@
 package id.ryandzhunter.contact.ui.contactlist
 
+import android.app.ProgressDialog
 import android.view.View
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.base.BaseActivity
-import id.ryandzhunter.contact.model.Contact
+import id.ryandzhunter.contact.model.ContactRealm
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -28,7 +29,7 @@ class ContactListActivity : BaseActivity(), ContactListView {
         }
     }
 
-    override fun onSearchResponse(list: List<Contact>?) {
+    override fun onResponse(list: List<ContactRealm>?) {
         rvContact.adapter = list?.let { ContactListAdapter (it) };
     }
 
@@ -40,6 +41,11 @@ class ContactListActivity : BaseActivity(), ContactListView {
         progressBar.visibility = View.INVISIBLE
     }
 
-    override fun noResult() {
+    override fun showNoResult() {
+        textNoResult.visibility = View.VISIBLE
+    }
+
+    override fun hideNoResult() {
+        textNoResult.visibility = View.INVISIBLE
     }
 }

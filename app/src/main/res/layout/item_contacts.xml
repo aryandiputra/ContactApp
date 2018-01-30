@@ -3,52 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
 
     <ImageView
         android:id="@+id/imageStar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:padding="10dp"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageContact"
+        app:layout_constraintBottom_toBottomOf="@+id/imageContact"
         app:srcCompat="@drawable/ic_star" />
 
     <TextView
         android:id="@+id/textIndexAlphabet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:text="A"
         android:textColor="@color/green"
         android:textSize="24sp"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/textContactAlphabet"
+        app:layout_constraintBottom_toBottomOf="@+id/textContactAlphabet" />
 
     <ImageView
         android:id="@+id/imageContact"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textContactAlphabet"
-        app:layout_constraintStart_toStartOf="@+id/textContactAlphabet"
-        app:layout_constraintEnd_toEndOf="@+id/textContactAlphabet"
-        app:layout_constraintTop_toTopOf="@+id/textContactAlphabet"
+        app:layout_constraintStart_toEndOf="@+id/imageStar"
         android:background="@drawable/circle"/>
 
     <TextView
         android:id="@+id/textContactAlphabet"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:text="A"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageStar"
-        app:layout_constraintStart_toEndOf="@+id/imageStar"
-        app:layout_constraintTop_toTopOf="@+id/imageStar" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageContact"
+        app:layout_constraintStart_toStartOf="@+id/imageContact"
+        app:layout_constraintTop_toTopOf="@+id/imageContact"
+        app:layout_constraintEnd_toEndOf="@+id/imageContact"
+        />
 
     <TextView
         android:id="@+id/textName"
@@ -58,7 +59,7 @@
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageStar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textContactAlphabet"
+        app:layout_constraintStart_toEndOf="@+id/imageContact"
         app:layout_constraintTop_toTopOf="@+id/imageStar" />
 
 </android.support.constraint.ConstraintLayout>

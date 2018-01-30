@@ -7,6 +7,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import id.ryandzhunter.contact.di.component.DaggerAppComponent
+import io.realm.Realm
 import javax.inject.Inject
 
 /**
@@ -24,6 +25,7 @@ class App: Application(), HasActivityInjector {
         super.onCreate()
         appComponent = createComponent()
         appComponent.inject(this)
+        Realm.init(this)
     }
 
     fun createComponent(): AppComponent {
