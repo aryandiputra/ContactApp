@@ -1,9 +1,11 @@
 package id.ryandzhunter.contact.base
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import dagger.android.AndroidInjection
 import id.ryandzhunter.contact.App
+import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.di.component.AppComponent
 import id.ryandzhunter.contact.event.DefaultEvent
 import org.greenrobot.eventbus.EventBus
@@ -16,6 +18,7 @@ import org.jetbrains.anko.toast
 abstract class BaseActivity: AppCompatActivity(), BaseView {
 
     private var presenter: BasePresenter<*>? = null
+    private lateinit var mAlertDialog: AlertDialog.Builder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +36,11 @@ abstract class BaseActivity: AppCompatActivity(), BaseView {
     }
 
     override fun onError() {
-        toast("Something went wrong")
+        mAlertDialog = AlertDialog.Builder(this)
+        mAlertDialog.setTitle(getString(R.string.network_error_title))
+        mAlertDialog.setMessage(getString(R.string.network_error_message))
+        mAlertDialog.setPositiveButton(getString(R.string.ok), { dialog, which -> dialog.cancel() })
+        mAlertDialog.show()
     }
 
     override fun onStart() {
