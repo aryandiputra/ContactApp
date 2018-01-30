@@ -22,7 +22,8 @@ interface Endpoints {
     abstract fun addContactToAPI(@Body contact: Contact): Observable<Contact>
 
     @PUT("/contacts/{id}.json")
-    abstract fun updateContact(@Path("id") id: Int, @Body contact: Contact): Observable<Contact>
+    abstract fun updateContact(@Path("id") id: Int, @Body contact: Contact)
+            : Observable<Contact>
 
     @DELETE("/contacts/{id}.json")
     abstract fun deleteContactToAPI(@Path("id") id: Int): Completable
@@ -33,5 +34,6 @@ interface Endpoints {
                                      @Part("contact[first_name]") firstName: RequestBody,
                                      @Part("contact[last_name]") lastName: RequestBody,
                                      @Part("contact[email]") email: RequestBody,
-                                     @Part("contact[phone_number]") phoneNumber: RequestBody): Observable<Contact>
+                                     @Part("contact[phone_number]") phoneNumber: RequestBody)
+            : Observable<Contact>
 }
