@@ -1,5 +1,6 @@
 package id.ryandzhunter.contact.ui.contactlist
 
+import com.vicpin.krealmextensions.deleteAll
 import com.vicpin.krealmextensions.queryAll
 import com.vicpin.krealmextensions.saveAll
 import id.ryandzhunter.contact.api.Endpoints
@@ -41,8 +42,8 @@ class ContactListPresenter @Inject constructor(var api: Endpoints, disposable: C
     }
 
     private fun saveToDatabase(contactList: List<Contact>) {
+        ContactRealm().deleteAll()
         val contactRealms: MutableList<ContactRealm> = mutableListOf<ContactRealm>()
-        contactRealms.clear()
         for (contact in contactList) {
             contactRealms.add(ContactRealm(contact.id, contact.firstName, contact.lastName,
                     contact.email, contact.phoneNumber, contact.profilePic, contact.favorite,
