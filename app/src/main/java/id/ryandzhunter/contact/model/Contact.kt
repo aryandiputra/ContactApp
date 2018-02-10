@@ -12,7 +12,7 @@ data class Contact(
         @SerializedName("email") var email: String? = "",
         @SerializedName("phone_number") var phoneNumber: String? = "",
         @SerializedName("profile_pic") var profilePic: String? = "",
-        @SerializedName("favorite") val favorite: Boolean,
+        @SerializedName("favorite") var favorite: Boolean,
         @SerializedName("created_at") val createAt: String,
         @SerializedName("updated_at") val updateAt: String
 )

@@ -22,7 +22,7 @@ interface Endpoints {
     abstract fun addContactToAPI(@Body contact: Contact): Observable<Contact>
 
     @PUT("/contacts/{id}.json")
-    abstract fun updateContact(@Path("id") id: Int, @Body contact: Contact)
+    abstract fun updateContact(@Path("id") id: Long, @Body contact: Contact)
             : Observable<Contact>
 
     @DELETE("/contacts/{id}.json")

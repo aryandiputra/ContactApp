@@ -34,7 +34,7 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
 
     lateinit var myClip: ClipData
     lateinit var myClipboard: ClipboardManager
-
+    private var isFavorite: Boolean = false
     private val REQ_STORAGE_PERMISSION: Int = 313
 
     companion object {
@@ -59,7 +59,9 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         presenter.getContactDetail(id)
     }
 
+
     override fun onResponse(contact: Contact) {
+        isFavorite = contact.favorite;
         GlideApp.with(this)
                 .load(contact.profilePic)
                 .placeholder(R.drawable.ic_betty_allen)
@@ -68,18 +70,37 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         textName.text = contact.firstName + " " + contact.lastName
         textMobile.text = contact.phoneNumber
         textEmail.text = contact.email
-        buttonCall.setOnClickListener { view -> onButtonCallClick(contact.phoneNumber) }
-        textMobile.setOnClickListener { view -> onPhoneNumberClick(contact.phoneNumber) }
-        buttonMessage.setOnClickListener { view -> onButtonMessageClick(contact.phoneNumber) }
-        buttonEmail.setOnClickListener { view -> onButtonEmailClick(contact.email) }
-        textEmail.setOnClickListener { view -> onEmailClick(contact.email) }
-        buttonShare.setOnClickListener { view -> onShareMenuClick(contact) }
+        updateFavoriteIcon(contact.favorite)
+        setOnClick(contact)
+    }
+
+    private fun setOnClick( contact: Contact) {
+        buttonFavorite.setOnClickListener {
+            isFavorite = !isFavorite
+            contact.favorite = isFavorite
+            presenter.updateFavorite(contact.id, contact)
+        }
+        buttonCall.setOnClickListener { onButtonCallClick(contact.phoneNumber) }
+        textMobile.setOnClickListener { onPhoneNumberClick(contact.phoneNumber) }
+        buttonMessage.setOnClickListener { onButtonMessageClick(contact.phoneNumber) }
+        buttonEmail.setOnClickListener { onButtonEmailClick(contact.email) }
+        textEmail.setOnClickListener { onEmailClick(contact.email) }
+        buttonShare.setOnClickListener { onShareMenuClick(contact) }
     }
 
     override fun showProgress() {
     }
 
     override fun hideProgress() {
+    }
+
+    override fun updateFavoriteIcon(favorite:Boolean){
+        isFavorite = favorite;
+        if (favorite) {
+            buttonFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favourite_filled))
+        } else {
+            buttonFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favourite))
+        }
     }
 
     fun onButtonCallClick(phoneNumber: String?) {

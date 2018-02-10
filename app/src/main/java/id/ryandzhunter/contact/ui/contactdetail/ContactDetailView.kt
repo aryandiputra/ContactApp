@@ -10,4 +10,5 @@ interface ContactDetailView : BaseView {
     fun onResponse(contact: Contact)
     fun showProgress()
     fun hideProgress()
+    fun updateFavoriteIcon(favorite:Boolean)
 }

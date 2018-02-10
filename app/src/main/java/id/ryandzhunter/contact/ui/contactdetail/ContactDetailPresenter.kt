@@ -1,8 +1,8 @@
 package id.ryandzhunter.contact.ui.contactdetail
 
-import com.vicpin.krealmextensions.queryAll
 import id.ryandzhunter.contact.api.Endpoints
 import id.ryandzhunter.contact.base.BasePresenter
+import id.ryandzhunter.contact.model.Contact
 import id.ryandzhunter.contact.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -29,5 +29,16 @@ class ContactDetailPresenter @Inject constructor(var api: Endpoints, disposable:
                             view?.hideProgress()
                         })
         )
+    }
+
+    fun updateFavorite(id: Long, contact: Contact) {
+        // tp update favorite contact
+        disposable.add(api.updateContact(id, contact)
+                .subscribeOn(scheduler.io())
+                .observeOn(scheduler.ui())
+                .doOnSubscribe({ disposable -> view?.showProgress() })
+                .doOnTerminate({ view?.hideProgress() })
+                .subscribe({ contactResult -> view?.updateFavoriteIcon(contactResult.favorite) },
+                        { throwable -> }))
     }
 }
