@@ -1,15 +1,25 @@
 package id.ryandzhunter.contact.ui.contactdetail
 
+import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Environment
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
+import android.util.Log
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.base.BaseActivity
 import id.ryandzhunter.contact.model.Contact
 import kotlinx.android.synthetic.main.activity_contact_detail.*
 import org.jetbrains.anko.toast
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -22,6 +32,8 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
 
     lateinit var myClip: ClipData
     lateinit var myClipboard: ClipboardManager
+
+    private val REQ_STORAGE_PERMISSION: Int = 313
 
     companion object {
 
@@ -54,6 +66,7 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         buttonMessage.setOnClickListener { view -> onButtonMessageClick(contact.phoneNumber) }
         buttonEmail.setOnClickListener { view -> onButtonEmailClick(contact.email) }
         textEmail.setOnClickListener { view -> onEmailClick(contact.email) }
+        buttonShare.setOnClickListener { view -> onShareMenuClick(contact) }
     }
 
     override fun showProgress() {
@@ -92,6 +105,75 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         val emailIntent = Intent(Intent.ACTION_SENDTO)
         emailIntent.data = Uri.parse("mailto:" + email)
         startActivity(Intent.createChooser(emailIntent, "Send email"))
+    }
+
+    fun onShareMenuClick(contact: Contact) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.share_contact)
+                .setItems(R.array.array_share_contact, { dialog, which ->
+                    when (which) {
+                        0 -> shareAsText(contact)
+                        1 -> shareAsContact(contact)
+                    }
+                }).create().show()
+    }
+
+    private fun shareAsText(contact: Contact) {
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Name: " + contact.firstName + " " + contact.lastName + " \n" +
+                "Phone Number: " + contact.phoneNumber + " \n" +
+                "Email: " + contact.email + "\n")
+        shareIntent.type = "text/plain"
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(shareIntent)
+    }
+
+
+    private fun shareAsContact(contact: Contact) {
+
+        if (ContextCompat.checkSelfPermission(this@ContactDetailActivity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQ_STORAGE_PERMISSION
+            )
+            return
+        }
+
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(generateVCF(contact)))
+        shareIntent.type = "text/x-vcard"
+        shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(shareIntent)
+    }
+
+    private fun generateVCF(contact: Contact): File {
+
+        val filename = Environment.getExternalStorageDirectory().toString() + "/generated.vcf"
+        Log.e("DetailActivity", filename)
+
+        val vcfFile = File(filename)
+        try {
+            val fw = FileWriter(vcfFile)
+            fw.run {
+                write("BEGIN:VCARD\r\n")
+                write("VERSION:3.0\r\n")
+                write("N:" + contact.firstName + ";" + contact.lastName + "\r\n")
+                write("FN:" + contact.firstName + " " + contact.lastName + "\r\n")
+                write("TEL;TYPE=HOME,VOICE:" + contact.phoneNumber + "\r\n")
+                write("EMAIL;TYPE=PREF,INTERNET:" + contact.email + "\r\n")
+                write("END:VCARD\r\n")
+                close()
+            }
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return vcfFile
     }
 
 }
