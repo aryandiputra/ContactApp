@@ -12,8 +12,10 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import com.bumptech.glide.Glide
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.base.BaseActivity
+import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.Contact
 import kotlinx.android.synthetic.main.activity_contact_detail.*
 import org.jetbrains.anko.toast
@@ -58,6 +60,11 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
     }
 
     override fun onResponse(contact: Contact) {
+        GlideApp.with(this)
+                .load(contact.profilePic)
+                .placeholder(R.drawable.ic_betty_allen)
+                .fitCenter()
+                .into(imageAvatar);
         textName.text = contact.firstName + " " + contact.lastName
         textMobile.text = contact.phoneNumber
         textEmail.text = contact.email

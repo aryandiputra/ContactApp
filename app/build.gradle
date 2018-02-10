@@ -85,8 +85,8 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-commons:0.10.1'
 
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
-    kapt 'com.github.bumptech.glide:compiler:4.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    kapt 'com.github.bumptech.glide:compiler:4.6.1'
 
     // realm extension
     implementation "com.github.vicpinm:krealmextensions:2.0.0"
