@@ -5,6 +5,7 @@ import android.view.View
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.base.BaseActivity
 import id.ryandzhunter.contact.model.ContactRealm
+import id.ryandzhunter.contact.ui.addcontact.AddContactActivity
 import id.ryandzhunter.contact.ui.contactdetail.ContactDetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
@@ -30,15 +31,15 @@ class ContactListActivity : BaseActivity(), ContactListView {
             layoutManager = android.support.v7.widget.LinearLayoutManager(this@ContactListActivity)
         }
 
-        buttonAdd.setOnClickListener { view -> startActivity(Intent(
-                this@ContactListActivity, ContactDetailActivity::class.java)) }
+        buttonAdd.setOnClickListener { startActivity(Intent(
+                this, AddContactActivity::class.java)) }
     }
 
     override fun onResponse(list: List<ContactRealm>?) {
         rvContact.adapter = list?.let { ContactListAdapter (it) {
 //                toast("${it.id} Clicked")
             val intent = ContactDetailActivity.newIntent(this, it.id)
-            startActivity(intent);
+            startActivity(intent)
         }};
     }
 

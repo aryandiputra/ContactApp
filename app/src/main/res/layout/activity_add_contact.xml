@@ -8,6 +8,8 @@
         android:id="@+id/imageAvatar"
         android:layout_width="match_parent"
         android:layout_height="230dp"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
         android:background="@color/colorContactBg"
         android:src="@drawable/ic_profile_large" />
 

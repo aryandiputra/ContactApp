@@ -8,6 +8,10 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'realm-android'
 
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion '26.0.3'

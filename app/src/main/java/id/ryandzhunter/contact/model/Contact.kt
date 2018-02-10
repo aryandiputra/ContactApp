@@ -1,10 +1,15 @@
 package id.ryandzhunter.contact.model
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by ryandzhunter on 1/3/17.
  */
+@SuppressLint("ParcelCreator")
+@Parcelize
 data class Contact(
         @SerializedName("id") val id: Long,
         @SerializedName("first_name") var firstName: String? = "",
@@ -15,4 +20,4 @@ data class Contact(
         @SerializedName("favorite") var favorite: Boolean,
         @SerializedName("created_at") val createAt: String,
         @SerializedName("updated_at") val updateAt: String
-)
+) : Parcelable

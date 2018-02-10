@@ -16,6 +16,7 @@ import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.base.BaseActivity
 import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.Contact
+import id.ryandzhunter.contact.ui.addcontact.AddContactActivity
 import kotlinx.android.synthetic.main.activity_contact_detail.*
 import org.jetbrains.anko.toast
 import java.io.File
@@ -64,7 +65,7 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         GlideApp.with(this)
                 .load(contact.profilePic)
                 .placeholder(R.drawable.ic_betty_allen)
-                .centerCrop()
+                .fitCenter()
                 .into(imageAvatar);
         textName.text = contact.firstName + " " + contact.lastName
         textMobile.text = contact.phoneNumber
@@ -78,6 +79,11 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
             isFavorite = !isFavorite
             contact.favorite = isFavorite
             presenter.updateFavorite(contact.id, contact)
+        }
+        buttonEdit.setOnClickListener {
+            contact.favorite = isFavorite
+            val intent = AddContactActivity.newIntent(this, contact)
+            startActivity(intent)
         }
         buttonCall.setOnClickListener { onButtonCallClick(contact.phoneNumber) }
         textMobile.setOnClickListener { onPhoneNumberClick(contact.phoneNumber) }
