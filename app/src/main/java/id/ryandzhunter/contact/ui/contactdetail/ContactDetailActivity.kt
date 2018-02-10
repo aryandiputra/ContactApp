@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.util.Log
-import com.bumptech.glide.Glide
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.base.BaseActivity
 import id.ryandzhunter.contact.di.module.GlideApp
@@ -34,6 +33,7 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
 
     lateinit var myClip: ClipData
     lateinit var myClipboard: ClipboardManager
+
     private var isFavorite: Boolean = false
     private val REQ_STORAGE_PERMISSION: Int = 313
 
@@ -59,13 +59,12 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         presenter.getContactDetail(id)
     }
 
-
     override fun onResponse(contact: Contact) {
         isFavorite = contact.favorite;
         GlideApp.with(this)
                 .load(contact.profilePic)
                 .placeholder(R.drawable.ic_betty_allen)
-                .fitCenter()
+                .centerCrop()
                 .into(imageAvatar);
         textName.text = contact.firstName + " " + contact.lastName
         textMobile.text = contact.phoneNumber
@@ -89,9 +88,11 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
     }
 
     override fun showProgress() {
+        progressDialog.show()
     }
 
     override fun hideProgress() {
+        progressDialog.cancel()
     }
 
     override fun updateFavoriteIcon(favorite:Boolean){
