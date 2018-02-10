@@ -16,7 +16,7 @@ interface Endpoints {
     abstract fun getAllContacts(): Observable<List<Contact>>
 
     @GET("/contacts/{id}.json")
-    abstract fun getContact(@Path("id") id: Int): Observable<Contact>
+    abstract fun getContact(@Path("id") id: Long): Observable<Contact>
 
     @POST("/contacts.json")
     abstract fun addContactToAPI(@Body contact: Contact): Observable<Contact>

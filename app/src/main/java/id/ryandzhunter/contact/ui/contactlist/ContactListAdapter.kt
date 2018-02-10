@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_contacts.view.*
 /**
  * Created by ryandzhunter on 1/3/17.
  */
-class ContactListAdapter(val data: List<ContactRealm>) : RecyclerView.Adapter<ContactListAdapter.ContactListViewHolder>() {
+class ContactListAdapter(val data: List<ContactRealm>, val listener: (ContactRealm) -> Unit) : RecyclerView.Adapter<ContactListAdapter.ContactListViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: ContactListViewHolder, position: Int) {
 
@@ -28,8 +28,9 @@ class ContactListAdapter(val data: List<ContactRealm>) : RecyclerView.Adapter<Co
             viewHolder.itemView.textIndexAlphabet.visibility = View.INVISIBLE
         }
 
-        viewHolder.itemView.textContactAlphabet.text = data[position].firstName?.toUpperCase()?.get(0).toString()
-        viewHolder.itemView.textName.text = data[position].firstName + " " + data[position].lastName
+//        viewHolder.itemView.textContactAlphabet.text = data[position].firstName?.toUpperCase()?.get(0).toString()
+//        viewHolder.itemView.textName.text = data[position].firstName + " " + data[position].lastName
+        viewHolder.bind(data[position],listener)
     }
 
      fun getLabel(position: Int) : String {
@@ -49,8 +50,13 @@ class ContactListAdapter(val data: List<ContactRealm>) : RecyclerView.Adapter<Co
         return data.size
     }
 
-    class ContactListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
+    class ContactListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(item: ContactRealm, listener: (ContactRealm) -> Unit) = with(itemView) {
+            textContactAlphabet.text = item.firstName?.toUpperCase()?.get(0).toString()
+            itemView.textName.text = item.firstName + " " + item.lastName
+            setOnClickListener { listener(item) }
+        }
+    }
 }
 
 

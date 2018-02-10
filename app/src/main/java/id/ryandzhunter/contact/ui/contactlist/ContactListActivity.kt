@@ -1,11 +1,13 @@
 package id.ryandzhunter.contact.ui.contactlist
 
-import android.app.ProgressDialog
+import android.content.Intent
 import android.view.View
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.base.BaseActivity
 import id.ryandzhunter.contact.model.ContactRealm
+import id.ryandzhunter.contact.ui.contactdetail.ContactDetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 /**
@@ -27,10 +29,17 @@ class ContactListActivity : BaseActivity(), ContactListView {
         with(rvContact) {
             layoutManager = android.support.v7.widget.LinearLayoutManager(this@ContactListActivity)
         }
+
+        buttonAdd.setOnClickListener { view -> startActivity(Intent(
+                this@ContactListActivity, ContactDetailActivity::class.java)) }
     }
 
     override fun onResponse(list: List<ContactRealm>?) {
-        rvContact.adapter = list?.let { ContactListAdapter (it) };
+        rvContact.adapter = list?.let { ContactListAdapter (it) {
+//                toast("${it.id} Clicked")
+            val intent = ContactDetailActivity.newIntent(this, it.id)
+            startActivity(intent);
+        }};
     }
 
     override fun showProgress() {
