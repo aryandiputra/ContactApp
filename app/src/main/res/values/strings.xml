@@ -13,6 +13,7 @@
     <string name="alert_phone">Phone Number should be of 10 digits</string>
     <string name="email">Email</string>
     <string name="alert_email">Email should be in email format</string>
+    <string name="toolbar_add_title">Add new contact</string>
     <string-array name="array_share_contact">
         <item>Share as a Text</item>
         <item>Share as a Contact</item>
