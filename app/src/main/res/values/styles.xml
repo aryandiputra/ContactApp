@@ -8,10 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ContactDetailTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AddContactTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/detailPrimary</item>
-        <item name="colorPrimaryDark">@color/detailSecondary</item>
+        <item name="colorPrimary">@color/addContactPrimary</item>
+        <item name="colorPrimaryDark">@color/addContactPrimaryDark</item>
         <item name="colorAccent">@android:color/darker_gray</item>
     </style>
 

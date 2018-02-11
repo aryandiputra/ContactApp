@@ -2,7 +2,6 @@ package id.ryandzhunter.contact.ui.addcontact
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -34,7 +33,7 @@ class AddContactActivity : AppCompatActivity() {
         actionBar?.title = getString(R.string.toolbar_add_title)
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat
-                .getColor(this, R.color.detailSecondary)))
+                .getColor(this, R.color.addContactPrimary)))
     }
 
     private fun initView(contact: Contact?) {
