@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.contactdetail.ContactDetailActivity" />
+            android:name=".ui.contactdetail.ContactDetailActivity"
+            android:theme="@style/AddContactTheme"/>
         <activity android:name=".ui.addcontact.AddContactActivity"
             android:theme="@style/AddContactTheme"/>
     </application>
