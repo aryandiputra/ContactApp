@@ -14,6 +14,8 @@ class ContactDetailPresenter @Inject constructor(var api: Endpoints, disposable:
                                                  scheduler: SchedulerProvider)
     : BasePresenter<ContactDetailView>(disposable, scheduler) {
 
+    lateinit var contact: Contact
+
     fun getContactDetail(id: Long) {
 
         view?.showProgress()
@@ -22,6 +24,7 @@ class ContactDetailPresenter @Inject constructor(var api: Endpoints, disposable:
                 .observeOn(scheduler.ui())
                 .subscribe(
                         { contact ->
+                            this.contact = contact
                             view?.hideProgress()
                             view?.onResponse(contact)
                         },
@@ -40,5 +43,38 @@ class ContactDetailPresenter @Inject constructor(var api: Endpoints, disposable:
                 .doOnTerminate({ view?.hideProgress() })
                 .subscribe({ contactResult -> view?.updateFavoriteIcon(contactResult.favorite) },
                         { throwable -> }))
+    }
+
+    fun onFavoriteButtonClicked(){
+        contact.favorite = !contact.favorite
+        updateFavorite(contact.id, contact)
+    }
+
+    fun onEditButtonClicked(){
+        view?.openContactDetailActivity(contact)
+    }
+
+    fun onCallButtonClicked(){
+        view?.openPhoneCall(contact.phoneNumber)
+    }
+
+    fun onPhoneNumberClicked(){
+        view?.copyPhoneNumber(contact.phoneNumber)
+    }
+
+    fun onMessageButtonClicked(){
+        view?.sendMessage(contact.phoneNumber)
+    }
+
+    fun onEmailButtonClicked(){
+        view?.sendEmail(contact.email)
+    }
+
+    fun onEmailClicked(){
+        view?.copyEmail(contact.email)
+    }
+
+    fun onShareButtonClicked(){
+        view?.openShareMenuDialog(contact)
     }
 }

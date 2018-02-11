@@ -56,7 +56,6 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
     override fun onActivityInject() {
         presenter.attachView(this)
         val id = intent.getLongExtra(INTENT_USER_ID, -1)
-        toast("${id} Clicked")
         presenter.getContactDetail(id)
     }
 
@@ -76,21 +75,24 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
 
     private fun setOnClick( contact: Contact) {
         buttonFavorite.setOnClickListener {
-            isFavorite = !isFavorite
-            contact.favorite = isFavorite
-            presenter.updateFavorite(contact.id, contact)
+            presenter.onFavoriteButtonClicked()
         }
         buttonEdit.setOnClickListener {
-            contact.favorite = isFavorite
-            val intent = AddContactActivity.newIntent(this, contact)
-            startActivity(intent)
+            presenter.onEditButtonClicked()
         }
-        buttonCall.setOnClickListener { onButtonCallClick(contact.phoneNumber) }
-        textMobile.setOnClickListener { onPhoneNumberClick(contact.phoneNumber) }
-        buttonMessage.setOnClickListener { onButtonMessageClick(contact.phoneNumber) }
-        buttonEmail.setOnClickListener { onButtonEmailClick(contact.email) }
-        textEmail.setOnClickListener { onEmailClick(contact.email) }
-        buttonShare.setOnClickListener { onShareMenuClick(contact) }
+        buttonCall.setOnClickListener {
+            presenter.onCallButtonClicked()
+        }
+        textMobile.setOnClickListener { presenter.onPhoneNumberClicked() }
+        buttonMessage.setOnClickListener { presenter.onMessageButtonClicked() }
+        buttonEmail.setOnClickListener { presenter.onEmailButtonClicked() }
+        textEmail.setOnClickListener { presenter.onEmailClicked() }
+        buttonShare.setOnClickListener { presenter.onShareButtonClicked() }
+    }
+
+    override fun openContactDetailActivity(contact: Contact) {
+        val intent = AddContactActivity.newIntent(this, contact)
+        startActivity(intent)
     }
 
     override fun showProgress() {
@@ -110,39 +112,39 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         }
     }
 
-    fun onButtonCallClick(phoneNumber: String?) {
+    override fun openPhoneCall(phoneNumber: String?) {
         val i = Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber))
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(i)
     }
 
-    fun onPhoneNumberClick(phoneNumber: String?) {
+    override fun copyPhoneNumber(phoneNumber: String?) {
         myClip = ClipData.newPlainText("text", phoneNumber)
         myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         myClipboard.setPrimaryClip(myClip)
         toast("${phoneNumber}")
     }
 
-    fun onEmailClick(email: String?) {
+    override fun copyEmail(email: String?) {
         myClip = ClipData.newPlainText("text", email)
         myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         myClipboard.setPrimaryClip(myClip)
         toast("${email}")
     }
 
-    fun onButtonMessageClick(phoneNumber: String?) {
+    override fun sendMessage(phoneNumber: String?) {
         val i = Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + phoneNumber))
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(i)
     }
 
-    fun onButtonEmailClick(email: String?) {
+    override fun sendEmail(email: String?) {
         val emailIntent = Intent(Intent.ACTION_SENDTO)
         emailIntent.data = Uri.parse("mailto:" + email)
         startActivity(Intent.createChooser(emailIntent, "Send email"))
     }
 
-    fun onShareMenuClick(contact: Contact) {
+    override fun openShareMenuDialog(contact: Contact) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.share_contact)
                 .setItems(R.array.array_share_contact, { dialog, which ->

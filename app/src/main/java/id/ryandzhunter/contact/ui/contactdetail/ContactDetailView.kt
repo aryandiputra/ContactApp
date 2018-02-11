@@ -11,4 +11,11 @@ interface ContactDetailView : BaseView {
     fun showProgress()
     fun hideProgress()
     fun updateFavoriteIcon(favorite:Boolean)
+    fun openPhoneCall(phoneNumber: String?)
+    fun copyPhoneNumber(phoneNumber: String?)
+    fun copyEmail(email: String?)
+    fun sendMessage(phoneNumber: String?)
+    fun sendEmail(email: String?)
+    fun openShareMenuDialog(contact: Contact)
+    fun openContactDetailActivity(contact: Contact)
 }
