@@ -25,6 +25,9 @@ android {
         buildConfigField "String", "BASE_URL", "\"http://gojek-contacts-app.herokuapp.com/\""
         vectorDrawables.useSupportLibrary = true
     }
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -97,5 +100,8 @@ dependencies {
 
     // realm adapter
     implementation 'io.realm:android-adapters:2.1.1'
+
+    // data binding
+    kapt 'com.android.databinding:compiler:3.0.1'
 
 }

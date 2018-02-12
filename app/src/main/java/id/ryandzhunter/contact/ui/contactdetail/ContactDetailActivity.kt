@@ -166,7 +166,6 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
         startActivity(shareIntent)
     }
 
-
     private fun shareAsContact(contact: Contact) {
 
         if (ContextCompat.checkSelfPermission(this@ContactDetailActivity,

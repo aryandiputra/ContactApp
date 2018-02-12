@@ -2,6 +2,7 @@ package id.ryandzhunter.contact.ui.addcontact
 
 import android.content.Context
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import id.ryandzhunter.contact.R
+import id.ryandzhunter.contact.databinding.ActivityAddContactBinding
 import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.Contact
 import kotlinx.android.synthetic.main.activity_add_contact.*
@@ -21,16 +23,21 @@ class AddContactActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_contact)
-        setToolbar()
+        var binding : ActivityAddContactBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_contact)
         var contact = intent.getParcelableExtra<Contact>(INTENT_CONTACT)
+        binding.addContactVM = AddContactViewModel(contact)
+        setToolbar(contact)
         initView(contact)
     }
 
-    private fun setToolbar() {
+    private fun setToolbar(contact: Contact?) {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
-        actionBar?.title = getString(R.string.toolbar_add_title)
+        if (contact == null){
+            actionBar?.title = getString(R.string.toolbar_add_title)
+        } else {
+            actionBar?.title = getString(R.string.toolbar_edit_title)
+        }
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat
                 .getColor(this, R.color.addContactPrimary)))
@@ -43,10 +50,6 @@ class AddContactActivity : AppCompatActivity() {
                 .error(R.drawable.ic_profile_large)
                 .centerCrop()
                 .into(imageAvatar);
-        editFirstName.setText(contact?.firstName)
-        editLastName.setText(contact?.lastName)
-        editPhone.setText(contact?.phoneNumber)
-        editEmail.setText(contact?.email)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

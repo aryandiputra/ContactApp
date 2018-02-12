@@ -14,6 +14,7 @@
     <string name="email">Email</string>
     <string name="alert_email">Email should be in email format</string>
     <string name="toolbar_add_title">Add new contact</string>
+    <string name="toolbar_edit_title">Edit contact</string>
     <string-array name="array_share_contact">
         <item>Share as a Text</item>
         <item>Share as a Contact</item>
