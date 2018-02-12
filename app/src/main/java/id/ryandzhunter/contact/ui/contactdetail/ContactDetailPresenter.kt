@@ -34,7 +34,7 @@ class ContactDetailPresenter @Inject constructor(var api: Endpoints, disposable:
         )
     }
 
-    fun updateFavorite(id: Long, contact: Contact) {
+    fun updateFavorite(id: Long?, contact: Contact) {
         // tp update favorite contact
         disposable.add(api.updateContact(id, contact)
                 .subscribeOn(scheduler.io())

@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:src="@drawable/ic_image"
-            android:onClick="@{()-> addContactVM.onButtonImageClicked()}"
+            android:onClick="@{()-> addContactVM.onImageButtonClicked()}"
             app:layout_constraintBottom_toBottomOf="@+id/imageAvatar"
             app:layout_constraintEnd_toEndOf="@+id/imageAvatar" />
 

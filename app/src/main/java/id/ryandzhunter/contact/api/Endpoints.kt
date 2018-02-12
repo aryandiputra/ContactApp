@@ -19,14 +19,14 @@ interface Endpoints {
     abstract fun getContact(@Path("id") id: Long): Observable<Contact>
 
     @POST("/contacts.json")
-    abstract fun addContactToAPI(@Body contact: Contact): Observable<Contact>
+    abstract fun addNewContact(@Body contact: Contact): Observable<Contact>
 
     @PUT("/contacts/{id}.json")
-    abstract fun updateContact(@Path("id") id: Long, @Body contact: Contact)
+    abstract fun updateContact(@Path("id") id: Long?, @Body contact: Contact)
             : Observable<Contact>
 
     @DELETE("/contacts/{id}.json")
-    abstract fun deleteContactToAPI(@Path("id") id: Int): Completable
+    abstract fun deleteContact(@Path("id") id: Int): Completable
 
     @Multipart
     @POST("/contacts.json")

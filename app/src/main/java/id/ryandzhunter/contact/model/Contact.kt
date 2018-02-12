@@ -11,13 +11,13 @@ import kotlinx.android.parcel.Parcelize
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class Contact(
-        @SerializedName("id") val id: Long,
+        @SerializedName("id") val id: Long? = null,
         @SerializedName("first_name") var firstName: String? = "",
         @SerializedName("last_name") var lastName: String? = "",
         @SerializedName("email") var email: String? = "",
         @SerializedName("phone_number") var phoneNumber: String? = "",
         @SerializedName("profile_pic") var profilePic: String? = "",
-        @SerializedName("favorite") var favorite: Boolean,
-        @SerializedName("created_at") val createAt: String,
-        @SerializedName("updated_at") val updateAt: String
+        @SerializedName("favorite") var favorite: Boolean = false,
+        @SerializedName("created_at") val createAt: String = "",
+        @SerializedName("updated_at") val updateAt: String = ""
 ) : Parcelable

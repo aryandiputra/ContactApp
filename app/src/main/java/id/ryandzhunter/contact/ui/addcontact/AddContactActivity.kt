@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import dagger.android.AndroidInjection
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.databinding.ActivityAddContactBinding
 import id.ryandzhunter.contact.di.module.GlideApp
@@ -26,6 +27,7 @@ import id.ryandzhunter.contact.model.Contact
 import kotlinx.android.synthetic.main.activity_add_contact.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
 
 /**
  * Created by ryandzhunter on 2/10/18.
@@ -37,12 +39,21 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
 
     private lateinit var photo: Bitmap
     private lateinit var imageUri: Uri
+    private var photoFilePaths: String? = null
+
+    @Inject
+    lateinit var viewModel : AddContactViewModel
+
+    lateinit var binding: ActivityAddContactBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var binding : ActivityAddContactBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_contact)
+        AndroidInjection.inject(this)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_contact)
         var contact = intent.getParcelableExtra<Contact>(INTENT_CONTACT)
-        binding.addContactVM = AddContactViewModel(contact, this)
+        binding.addContactVM = viewModel
+        contact?.let { binding.addContactVM?.initContact(contact) }
+        binding.addContactVM?.initView(this)
         setToolbar(contact)
     }
 
@@ -74,6 +85,7 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
                 return true
             }
             R.id.toolbar_check -> {
+                binding.addContactVM?.onChecklistClicked()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -135,10 +147,6 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
         startActivityForResult(cameraIntent, REQUEST_CODE_CAPTURE_IMAGE)
     }
 
-    lateinit var photoSelected: Uri
-
-    private var photoFilePaths: String? = null
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -156,8 +164,8 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
             }
             REQUEST_CODE_GALLERY -> if (resultCode == RESULT_OK && data != null
                     && data.getData() != null) {
-                photoSelected = data.getData()
-                photoFilePaths = getRealPathFromURI(this, photoSelected)
+                imageUri = data.getData()
+                photoFilePaths = getRealPathFromURI(this, imageUri)
                 GlideApp.with(this)
                         .load(photoFilePaths)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)

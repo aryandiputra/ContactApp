@@ -2,26 +2,43 @@ package id.ryandzhunter.contact.ui.addcontact
 
 import android.databinding.BaseObservable
 import android.databinding.BindingAdapter
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.text.TextUtils
 import android.util.Patterns
 import android.widget.ImageView
 import id.ryandzhunter.contact.R
+import id.ryandzhunter.contact.api.Endpoints
 import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.Contact
+import id.ryandzhunter.contact.util.SchedulerProvider
+import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 /**
  * Created by ryandzhunter on 2/10/18.
  */
-class AddContactViewModel constructor (var contact: Contact?, var view: AddContactView) : BaseObservable() {
+class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable: CompositeDisposable,
+                                              var scheduler: SchedulerProvider) : BaseObservable() {
 
     var isValidFirstName = ObservableField<Boolean>()
     var isValidLastName = ObservableField<Boolean>()
     var isValidPhoneNumber = ObservableField<Boolean>()
     var isValidEmail = ObservableField<Boolean>()
 
-    init {
-        contact?.let { setValidityFlag(it) }
+    internal var isLoading = ObservableBoolean()
+    internal var obsError = ObservableField<Throwable>()
+
+    private var contact: Contact = Contact()
+    private lateinit var view: AddContactView
+
+    fun initContact(contact: Contact) {
+        this.contact = contact
+        contact.let { setValidityFlag(it) }
+    }
+
+    fun initView(view: AddContactView) {
+        this.view = view
     }
 
     private fun setValidityFlag(contact: Contact) {
@@ -36,7 +53,8 @@ class AddContactViewModel constructor (var contact: Contact?, var view: AddConta
     }
 
     fun isValidPhoneNumber(phone: String): Boolean {
-        return !TextUtils.isEmpty(phone) && Patterns.PHONE.matcher(phone).matches() && phone.length >= 10
+        return !TextUtils.isEmpty(phone) && Patterns.PHONE.matcher(phone).matches()
+                && phone.length >= 10
     }
 
     fun isValidEmail(email: String): Boolean {
@@ -44,38 +62,38 @@ class AddContactViewModel constructor (var contact: Contact?, var view: AddConta
     }
 
     fun getFirstName(): String? {
-        return contact?.firstName
+        return contact.firstName
     }
 
     fun setFirstName(firstName: String) {
-        contact?.firstName = firstName
+        contact.firstName = firstName
         isValidFirstName.set(isValidName(firstName))
     }
 
     fun getLastName(): String? {
-        return contact?.lastName
+        return contact.lastName
     }
 
     fun setLastName(lastName: String) {
-        contact?.lastName = lastName
+        contact.lastName = lastName
         isValidLastName.set(isValidName(lastName))
     }
 
     fun getEmail(): String? {
-        return contact?.email
+        return contact.email
     }
 
     fun setEmail(email: String) {
-        contact?.email = email
+        contact.email = email
         isValidEmail.set(isValidEmail(email))
     }
 
     fun getPhoneNumber(): String? {
-        return contact?.phoneNumber
+        return contact.phoneNumber
     }
 
     fun setPhoneNumber(phoneNumber: String) {
-        contact?.phoneNumber = phoneNumber
+        contact.phoneNumber = phoneNumber
         isValidPhoneNumber.set(isValidPhoneNumber(phoneNumber))
     }
 
@@ -93,15 +111,42 @@ class AddContactViewModel constructor (var contact: Contact?, var view: AddConta
         }
     }
 
-    fun getProfilePic() : String ? {
-        return contact?.profilePic
+    fun getProfilePic() : String? {
+        return contact.profilePic
     }
 
     fun setProfilePic(profilePic : String) {
-        contact?.profilePic = profilePic
+        contact.profilePic = profilePic
     }
 
-    fun onButtonImageClicked() {
+    fun onImageButtonClicked() {
         view.openChoosePhotoDialog()
     }
+
+    fun onChecklistClicked() {
+        if (contact.id == null) {
+            contact.let { addNewContact(it) }
+        } else {
+            contact.let { updateContact(it) }
+        }
+    }
+
+    fun addNewContact(contact: Contact) {
+        disposable.add(api.addNewContact(contact)
+                .subscribeOn(scheduler.io())
+                .observeOn(scheduler.ui())
+                .doOnSubscribe({ disposable -> isLoading.set(true) })
+                .doOnTerminate({ isLoading.set(false) })
+                .subscribe({ contacts -> }, { throwable -> obsError.set(throwable) }))
+    }
+
+    fun updateContact(contact: Contact) {
+        disposable.add(api.updateContact(contact.id, contact)
+                .subscribeOn(scheduler.io())
+                .observeOn(scheduler.ui())
+                .doOnSubscribe({ disposable -> isLoading.set(true) })
+                .doOnTerminate({ isLoading.set(false) })
+                .subscribe({ contacts -> }, { throwable -> obsError.set(throwable) }))
+    }
+
 }

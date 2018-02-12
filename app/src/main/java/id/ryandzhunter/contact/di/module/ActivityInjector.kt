@@ -5,6 +5,8 @@ import dagger.android.ContributesAndroidInjector
 import id.ryandzhunter.contact.ui.contactlist.ContactListActivity
 import id.ryandzhunter.contact.ui.contactlist.ContactListModule
 import id.ryandzhunter.contact.di.ActivityScope
+import id.ryandzhunter.contact.ui.addcontact.AddContactActivity
+import id.ryandzhunter.contact.ui.addcontact.AddContactModule
 import id.ryandzhunter.contact.ui.contactdetail.ContactDetailActivity
 import id.ryandzhunter.contact.ui.contactdetail.ContactDetailModule
 
@@ -21,5 +23,9 @@ abstract class ActivityInjector {
     @ActivityScope
     @ContributesAndroidInjector(modules = arrayOf(ContactDetailModule::class))
     abstract fun bindContactDetailInjector(): ContactDetailActivity
+
+    @ActivityScope
+    @ContributesAndroidInjector(modules = arrayOf(AddContactModule::class))
+    abstract fun bindAddContactInjector(): AddContactActivity
 
 }
