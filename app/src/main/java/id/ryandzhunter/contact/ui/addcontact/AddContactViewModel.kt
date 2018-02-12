@@ -13,7 +13,7 @@ import id.ryandzhunter.contact.model.Contact
 /**
  * Created by ryandzhunter on 2/10/18.
  */
-class AddContactViewModel constructor (var contact: Contact?) : BaseObservable() {
+class AddContactViewModel constructor (var contact: Contact?, var view: AddContactView) : BaseObservable() {
 
     var isValidFirstName = ObservableField<Boolean>()
     var isValidLastName = ObservableField<Boolean>()
@@ -99,5 +99,9 @@ class AddContactViewModel constructor (var contact: Contact?) : BaseObservable()
 
     fun setProfilePic(profilePic : String) {
         contact?.profilePic = profilePic
+    }
+
+    fun onButtonImageClicked() {
+        view.openChoosePhotoDialog()
     }
 }
