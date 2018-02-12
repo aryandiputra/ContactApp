@@ -1,9 +1,13 @@
 package id.ryandzhunter.contact.ui.addcontact
 
 import android.databinding.BaseObservable
+import android.databinding.BindingAdapter
 import android.databinding.ObservableField
 import android.text.TextUtils
 import android.util.Patterns
+import android.widget.ImageView
+import id.ryandzhunter.contact.R
+import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.Contact
 
 /**
@@ -75,5 +79,25 @@ class AddContactViewModel constructor (var contact: Contact?) : BaseObservable()
         isValidPhoneNumber.set(isValidPhoneNumber(phoneNumber))
     }
 
+    companion object {
+        @JvmStatic
+        @BindingAdapter(value = arrayOf("bind:imageUrl"), requireAll = false)
+        fun loadImage(imageView: ImageView, imageUrl: String?) {
+            if (imageUrl != null)
+                GlideApp.with(imageView.context)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.ic_profile_large)
+                        .error(R.drawable.ic_profile_large)
+                        .fitCenter()
+                        .into(imageView)
+        }
+    }
 
+    fun getProfilePic() : String ? {
+        return contact?.profilePic
+    }
+
+    fun setProfilePic(profilePic : String) {
+        contact?.profilePic = profilePic
+    }
 }

@@ -27,7 +27,6 @@ class AddContactActivity : AppCompatActivity() {
         var contact = intent.getParcelableExtra<Contact>(INTENT_CONTACT)
         binding.addContactVM = AddContactViewModel(contact)
         setToolbar(contact)
-        initView(contact)
     }
 
     private fun setToolbar(contact: Contact?) {
@@ -41,15 +40,6 @@ class AddContactActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat
                 .getColor(this, R.color.addContactPrimary)))
-    }
-
-    private fun initView(contact: Contact?) {
-        GlideApp.with(this)
-                .load(contact?.profilePic)
-                .placeholder(R.drawable.ic_profile_large)
-                .error(R.drawable.ic_profile_large)
-                .centerCrop()
-                .into(imageAvatar);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
