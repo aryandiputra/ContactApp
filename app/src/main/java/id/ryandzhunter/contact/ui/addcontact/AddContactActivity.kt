@@ -5,8 +5,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.databinding.DataBindingUtil
+import android.graphics.Bitmap
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,10 +18,14 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.databinding.ActivityAddContactBinding
+import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.Contact
+import kotlinx.android.synthetic.main.activity_add_contact.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.io.ByteArrayOutputStream
 
 /**
  * Created by ryandzhunter on 2/10/18.
@@ -27,6 +34,9 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
 
     private val REQUEST_CODE_GALLERY: Int = 133
     private val REQUEST_CODE_CAPTURE_IMAGE: Int = 134
+
+    private lateinit var photo: Bitmap
+    private lateinit var imageUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,4 +134,67 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(cameraIntent, REQUEST_CODE_CAPTURE_IMAGE)
     }
+
+    lateinit var photoSelected: Uri
+
+    private var photoFilePaths: String? = null
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQUEST_CODE_CAPTURE_IMAGE -> if (resultCode == RESULT_OK) {
+                photo = data?.extras?.get("data") as Bitmap
+                imageUri = getImageUri(this, photo)
+                val stream = ByteArrayOutputStream()
+                photo.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                GlideApp.with(this)
+                        .load(stream.toByteArray())
+                        .error(R.drawable.ic_profile_large)
+                        .fitCenter()
+                        .into(imageAvatar)
+            }
+            REQUEST_CODE_GALLERY -> if (resultCode == RESULT_OK && data != null
+                    && data.getData() != null) {
+                photoSelected = data.getData()
+                photoFilePaths = getRealPathFromURI(this, photoSelected)
+                GlideApp.with(this)
+                        .load(photoFilePaths)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .fitCenter()
+                        .into(imageAvatar)
+            }
+        }
+    }
+
+    fun getImageUri(context: Context, image: Bitmap?): Uri {
+        val bytes = ByteArrayOutputStream()
+        image?.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, image, "Title", null)
+        return Uri.parse(path)
+    }
+
+    fun getRealPathFromURI(context: Context, contentUri: Uri): String? {
+        var cursor: Cursor? = null
+        try {
+            val proj = arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.contentResolver.query(contentUri, proj, null, null, null)
+            if (cursor == null) {
+                return contentUri.path
+            } else {
+                val column_index = cursor
+                        .getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                cursor.moveToFirst()
+                return cursor.getString(column_index)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            if (cursor != null) {
+                cursor.close()
+            }
+        }
+        return null
+    }
+
 }
