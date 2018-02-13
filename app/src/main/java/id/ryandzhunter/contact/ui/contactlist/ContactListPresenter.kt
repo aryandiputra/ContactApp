@@ -31,7 +31,8 @@ class ContactListPresenter @Inject constructor(var api: Endpoints, disposable: C
                             if (contactList == null || contactList.isEmpty()) {
                                 view?.showNoResult()
                             }
-                            view?.onResponse(ContactRealm().queryAll())
+                            val cacheContactList = getLocalDatabase()
+                            view?.onResponse(cacheContactList)
                         },
                         { _ ->
                             view?.hideProgress()
@@ -50,5 +51,15 @@ class ContactListPresenter @Inject constructor(var api: Endpoints, disposable: C
                     contact.createAt, contact.updateAt))
         }
         contactRealms.saveAll()
+    }
+
+    private fun getLocalDatabase() : List<ContactRealm> {
+        val cacheFavoriteContactList = ContactRealm().queryAll()
+                .filter { contactRealm -> contactRealm.favorite == true }
+                .sortedBy { contactRealm -> contactRealm.firstName }
+        val cacheContactList = ContactRealm().queryAll()
+                .filter { contactRealm -> contactRealm.favorite == false }
+                .sortedBy { contactRealm -> contactRealm.firstName }
+        return cacheFavoriteContactList.plus(cacheContactList)
     }
 }
