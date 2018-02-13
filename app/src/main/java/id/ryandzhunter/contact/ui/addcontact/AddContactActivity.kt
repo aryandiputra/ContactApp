@@ -37,10 +37,6 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
     private val REQUEST_CODE_GALLERY: Int = 133
     private val REQUEST_CODE_CAPTURE_IMAGE: Int = 134
 
-    private lateinit var photo: Bitmap
-    private lateinit var imageUri: Uri
-    private var photoFilePaths: String? = null
-
     @Inject
     lateinit var viewModel : AddContactViewModel
 
@@ -152,8 +148,9 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
 
         when (requestCode) {
             REQUEST_CODE_CAPTURE_IMAGE -> if (resultCode == RESULT_OK) {
-                photo = data?.extras?.get("data") as Bitmap
-                imageUri = getImageUri(this, photo)
+                val photo = data?.extras?.get("data") as Bitmap
+                var imageUri = getImageUri(this, photo)
+                binding.addContactVM?.setPhotoBitmap(photo)
                 val stream = ByteArrayOutputStream()
                 photo.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 GlideApp.with(this)
@@ -164,8 +161,10 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
             }
             REQUEST_CODE_GALLERY -> if (resultCode == RESULT_OK && data != null
                     && data.getData() != null) {
-                imageUri = data.getData()
-                photoFilePaths = getRealPathFromURI(this, imageUri)
+                val imageUri = data.getData()
+                val photo = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+                binding.addContactVM?.setPhotoBitmap(photo)
+                val photoFilePaths = getRealPathFromURI(this, imageUri)
                 GlideApp.with(this)
                         .load(photoFilePaths)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
