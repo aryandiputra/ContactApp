@@ -1,6 +1,7 @@
 package id.ryandzhunter.contact.ui.contactlist
 
 import android.graphics.drawable.Drawable
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,6 @@ import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.ContactRealm
 import jp.wasabeef.glide.transformations.CropCircleTransformation
-import jp.wasabeef.glide.transformations.CropTransformation
 import kotlinx.android.synthetic.main.item_contacts.view.*
 
 /**
@@ -60,11 +60,12 @@ class ContactListAdapter(val data: List<ContactRealm>, val listener: (ContactRea
 
     class ContactListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: ContactRealm, listener: (ContactRealm) -> Unit) = with(itemView) {
-            textContactAlphabet.text = item.firstName?.toUpperCase()?.get(0).toString()
+            itemView.textContactAlphabet.text = item.firstName?.toUpperCase()?.get(0).toString()
             itemView.textName.text = item.firstName + " " + item.lastName
             setOnClickListener { listener(item) }
 
-            textContactAlphabet.visibility = View.VISIBLE
+            itemView.textContactAlphabet.visibility = View.VISIBLE
+            itemView.imageContact.background = ContextCompat.getDrawable(itemView.context, R.drawable.circle)
             if (!item.profilePic.equals("/images/missing.png")){
                 GlideApp.with(imageContact.context)
                         .load(item.profilePic)
@@ -72,7 +73,7 @@ class ContactListAdapter(val data: List<ContactRealm>, val listener: (ContactRea
                             override fun onResourceReady(resource: Drawable?, model: Any?,
                                                          target: Target<Drawable>?, dataSource: DataSource?,
                                                          isFirstResource: Boolean): Boolean {
-                                textContactAlphabet.visibility = View.INVISIBLE
+                                itemView.textContactAlphabet.visibility = View.INVISIBLE
                                 return false
                             }
                             override fun onLoadFailed(e: GlideException?, model: Any?,
@@ -84,7 +85,9 @@ class ContactListAdapter(val data: List<ContactRealm>, val listener: (ContactRea
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .centerCrop()
                         .apply(bitmapTransform(CropCircleTransformation()))
-                        .into(imageContact)
+                        .into(itemView.imageContact)
+            } else {
+                itemView.imageContact.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.circle))
             }
         }
     }
