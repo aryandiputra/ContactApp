@@ -1,11 +1,21 @@
 package id.ryandzhunter.contact.ui.contactlist
 
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import com.bumptech.glide.request.target.Target
 import id.ryandzhunter.contact.R
+import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.ContactRealm
+import jp.wasabeef.glide.transformations.CropCircleTransformation
+import jp.wasabeef.glide.transformations.CropTransformation
 import kotlinx.android.synthetic.main.item_contacts.view.*
 
 /**
@@ -28,8 +38,6 @@ class ContactListAdapter(val data: List<ContactRealm>, val listener: (ContactRea
             viewHolder.itemView.textIndexAlphabet.visibility = View.INVISIBLE
         }
 
-//        viewHolder.itemView.textContactAlphabet.text = data[position].firstName?.toUpperCase()?.get(0).toString()
-//        viewHolder.itemView.textName.text = data[position].firstName + " " + data[position].lastName
         viewHolder.bind(data[position],listener)
     }
 
@@ -55,6 +63,29 @@ class ContactListAdapter(val data: List<ContactRealm>, val listener: (ContactRea
             textContactAlphabet.text = item.firstName?.toUpperCase()?.get(0).toString()
             itemView.textName.text = item.firstName + " " + item.lastName
             setOnClickListener { listener(item) }
+
+            textContactAlphabet.visibility = View.VISIBLE
+            if (!item.profilePic.equals("/images/missing.png")){
+                GlideApp.with(imageContact.context)
+                        .load(item.profilePic)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onResourceReady(resource: Drawable?, model: Any?,
+                                                         target: Target<Drawable>?, dataSource: DataSource?,
+                                                         isFirstResource: Boolean): Boolean {
+                                textContactAlphabet.visibility = View.INVISIBLE
+                                return false
+                            }
+                            override fun onLoadFailed(e: GlideException?, model: Any?,
+                                                      target: com.bumptech.glide.request.target.Target<Drawable>?,
+                                                      isFirstResource: Boolean): Boolean {
+                                return false
+                            }
+                        })
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop()
+                        .apply(bitmapTransform(CropCircleTransformation()))
+                        .into(imageContact)
+            }
         }
     }
 }
