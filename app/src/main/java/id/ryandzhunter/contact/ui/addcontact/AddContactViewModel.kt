@@ -165,7 +165,7 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
     private fun addNewContactWithPhoto(photo: Bitmap?) {
         val file = createImageFile(photo)
         val imageBody = RequestBody.create(MediaType.parse("image/jpg"), file)
-        val imagePart = MultipartBody.Part.createFormData("contact[profile_pic]", file.getName(), imageBody)
+        val imagePart = MultipartBody.Part.createFormData("contact[profile_pic]", file.name, imageBody)
         val firstNameBody = RequestBody.create(MediaType.parse("text/plain"), contact.firstName)
         val lastNameBody = RequestBody.create(MediaType.parse("text/plain"), contact.lastName)
         val emailBody = RequestBody.create(MediaType.parse("text/plain"), contact.email)

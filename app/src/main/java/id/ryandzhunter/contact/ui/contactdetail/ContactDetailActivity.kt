@@ -60,12 +60,12 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
     }
 
     override fun onResponse(contact: Contact) {
-        isFavorite = contact.favorite;
+        isFavorite = contact.favorite
         GlideApp.with(this)
                 .load(contact.profilePic)
                 .placeholder(R.drawable.ic_betty_allen)
                 .fitCenter()
-                .into(imageAvatar);
+                .into(imageAvatar)
         textName.text = contact.firstName + " " + contact.lastName
         textMobile.text = contact.phoneNumber
         textEmail.text = contact.email
@@ -104,7 +104,7 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
     }
 
     override fun updateFavoriteIcon(favorite:Boolean){
-        isFavorite = favorite;
+        isFavorite = favorite
         if (favorite) {
             buttonFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favourite_filled))
         } else {
@@ -121,14 +121,14 @@ class ContactDetailActivity : BaseActivity(), ContactDetailView {
     override fun copyPhoneNumber(phoneNumber: String?) {
         myClip = ClipData.newPlainText("text", phoneNumber)
         myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        myClipboard.setPrimaryClip(myClip)
+        myClipboard.primaryClip = myClip
         toast("${phoneNumber}")
     }
 
     override fun copyEmail(email: String?) {
         myClip = ClipData.newPlainText("text", email)
         myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-        myClipboard.setPrimaryClip(myClip)
+        myClipboard.primaryClip = myClip
         toast("${email}")
     }
 

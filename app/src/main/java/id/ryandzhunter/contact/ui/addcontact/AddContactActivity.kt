@@ -160,8 +160,8 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
                         .into(imageAvatar)
             }
             REQUEST_CODE_GALLERY -> if (resultCode == RESULT_OK && data != null
-                    && data.getData() != null) {
-                val imageUri = data.getData()
+                    && data.data != null) {
+                val imageUri = data.data
                 val photo = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
                 binding.addContactVM?.setPhotoBitmap(photo)
                 val photoFilePaths = getRealPathFromURI(this, imageUri)

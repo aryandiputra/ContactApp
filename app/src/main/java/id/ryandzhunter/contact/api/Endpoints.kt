@@ -13,27 +13,27 @@ import retrofit2.http.*
 interface Endpoints {
 
     @GET("/contacts.json")
-    abstract fun getAllContacts(): Observable<List<Contact>>
+    fun getAllContacts(): Observable<List<Contact>>
 
     @GET("/contacts/{id}.json")
-    abstract fun getContact(@Path("id") id: Long): Observable<Contact>
+    fun getContact(@Path("id") id: Long): Observable<Contact>
 
     @POST("/contacts.json")
-    abstract fun addNewContact(@Body contact: Contact): Observable<Contact>
+    fun addNewContact(@Body contact: Contact): Observable<Contact>
 
     @PUT("/contacts/{id}.json")
-    abstract fun updateContact(@Path("id") id: Long?, @Body contact: Contact)
+    fun updateContact(@Path("id") id: Long?, @Body contact: Contact)
             : Observable<Contact>
 
     @DELETE("/contacts/{id}.json")
-    abstract fun deleteContact(@Path("id") id: Int): Completable
+    fun deleteContact(@Path("id") id: Int): Completable
 
     @Multipart
     @POST("/contacts.json")
-    abstract fun addContactWithImage(@Part image: MultipartBody.Part,
-                                     @Part("contact[first_name]") firstName: RequestBody,
-                                     @Part("contact[last_name]") lastName: RequestBody,
-                                     @Part("contact[email]") email: RequestBody,
-                                     @Part("contact[phone_number]") phoneNumber: RequestBody)
+    fun addContactWithImage(@Part image: MultipartBody.Part,
+                            @Part("contact[first_name]") firstName: RequestBody,
+                            @Part("contact[last_name]") lastName: RequestBody,
+                            @Part("contact[email]") email: RequestBody,
+                            @Part("contact[phone_number]") phoneNumber: RequestBody)
             : Observable<Contact>
 }

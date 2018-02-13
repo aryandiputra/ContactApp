@@ -2,15 +2,15 @@ package id.ryandzhunter.contact.di.module
 
 import android.app.Application
 import android.content.Context
-import id.ryandzhunter.contact.helper.SpHelper
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder
+import id.ryandzhunter.contact.helper.SpHelper
 import id.ryandzhunter.contact.util.AppSchedulerProvider
 import id.ryandzhunter.contact.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Singleton
 
 /**
  * Created by ryandzhunter on 12/25/17.

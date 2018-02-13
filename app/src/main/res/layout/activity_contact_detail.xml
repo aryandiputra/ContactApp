@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
-                android:text="Mobile"
+                android:text="@string/mobile"
                 app:layout_constraintStart_toStartOf="@+id/textMobile"
                 app:layout_constraintTop_toBottomOf="@+id/textMobile" />
 
@@ -125,7 +125,7 @@
                 android:paddingBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email"
+                android:text="@string/email"
                 app:layout_constraintStart_toStartOf="@+id/textEmail"
                 app:layout_constraintTop_toBottomOf="@+id/textEmail" />
 

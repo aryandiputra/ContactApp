@@ -8,7 +8,6 @@ import id.ryandzhunter.contact.model.ContactRealm
 import id.ryandzhunter.contact.ui.addcontact.AddContactActivity
 import id.ryandzhunter.contact.ui.contactdetail.ContactDetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 /**
@@ -37,10 +36,9 @@ class ContactListActivity : BaseActivity(), ContactListView {
 
     override fun onResponse(list: List<ContactRealm>?) {
         rvContact.adapter = list?.let { ContactListAdapter (it) {
-//                toast("${it.id} Clicked")
             val intent = ContactDetailActivity.newIntent(this, it.id)
             startActivity(intent)
-        }};
+        }}
     }
 
     override fun showProgress() {
