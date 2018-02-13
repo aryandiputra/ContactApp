@@ -17,9 +17,10 @@
             type="id.ryandzhunter.contact.ui.addcontact.AddContactViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar_add"
@@ -27,147 +28,163 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />
 
-        <ImageView
-            android:id="@+id/imageAvatar"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:adjustViewBounds="true"
-            android:background="@color/colorContactBg"
-            android:scaleType="center"
-            android:src="@drawable/ic_profile_large"
-            app:imageUrl="@{addContactVM.profilePic}"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_add" />
-
-        <ImageView
-            android:id="@+id/buttonImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:src="@drawable/ic_image"
-            android:onClick="@{()-> addContactVM.onImageButtonClicked()}"
-            app:layout_constraintBottom_toBottomOf="@+id/imageAvatar"
-            app:layout_constraintEnd_toEndOf="@+id/imageAvatar" />
-
-        <ImageView
-            android:id="@+id/iconFirstName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:src="@drawable/ic_profile"
-            app:layout_constraintTop_toBottomOf="@+id/buttonImage" />
-
-        <EditText
-            android:id="@+id/editFirstName"
-            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:hint="@string/first_name"
-            android:text="@={addContactVM.firstName}"
-            app:layout_constraintBottom_toBottomOf="@+id/iconFirstName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iconFirstName"
-            app:layout_constraintTop_toTopOf="@+id/iconFirstName" />
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/textAlertFirstName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/alert_first_name"
-            android:textColor="@android:color/holo_red_light"
-            android:visibility="@{addContactVM.isValidFirstName ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintEnd_toEndOf="@+id/editFirstName"
-            app:layout_constraintStart_toStartOf="@+id/editFirstName"
-            app:layout_constraintTop_toBottomOf="@+id/editFirstName" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iconLastName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:src="@drawable/ic_profile"
-            app:layout_constraintTop_toBottomOf="@+id/iconFirstName" />
+                <ImageView
+                    android:id="@+id/imageAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="228dp"
+                    android:adjustViewBounds="true"
+                    android:background="@color/colorContactBg"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_profile_large"
+                    app:imageUrl="@{addContactVM.profilePic}"
+                    tool:layout_editor_absoluteY="2dp" />
 
-        <EditText
-            android:id="@+id/editLastName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:hint="@string/last_name"
-            android:text="@={addContactVM.lastName}"
-            app:layout_constraintBottom_toBottomOf="@+id/iconLastName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iconLastName"
-            app:layout_constraintTop_toTopOf="@+id/iconLastName" />
+                <ImageView
+                    android:id="@+id/buttonImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()-> addContactVM.onImageButtonClicked()}"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_image"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageAvatar"
+                    app:layout_constraintEnd_toEndOf="@+id/imageAvatar" />
 
-        <TextView
-            android:id="@+id/textAlertLastName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/alert_last_name"
-            android:textColor="@android:color/holo_red_light"
-            android:visibility="@{addContactVM.isValidLastName() ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintEnd_toEndOf="@+id/editLastName"
-            app:layout_constraintStart_toStartOf="@+id/editLastName"
-            app:layout_constraintTop_toBottomOf="@+id/editLastName" />
+                <ImageView
+                    android:id="@+id/iconFirstName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_profile"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonImage" />
 
-        <ImageView
-            android:id="@+id/iconPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:src="@drawable/ic_call_grey"
-            app:layout_constraintTop_toBottomOf="@+id/iconLastName" />
+                <EditText
+                    android:id="@+id/editFirstName"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:hint="@string/first_name"
+                    android:text="@={addContactVM.firstName}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iconFirstName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iconFirstName"
+                    app:layout_constraintTop_toTopOf="@+id/iconFirstName" />
 
-        <EditText
-            android:id="@+id/editPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:hint="@string/phone"
-            android:text="@={addContactVM.phoneNumber}"
-            app:layout_constraintBottom_toBottomOf="@+id/iconPhone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iconPhone"
-            app:layout_constraintTop_toTopOf="@+id/iconPhone" />
+                <TextView
+                    android:id="@+id/textAlertFirstName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/alert_first_name"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="@{addContactVM.isValidFirstName ? View.INVISIBLE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/editFirstName"
+                    app:layout_constraintStart_toStartOf="@+id/editFirstName"
+                    app:layout_constraintTop_toBottomOf="@+id/editFirstName" />
 
-        <TextView
-            android:id="@+id/textAlertPhone"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/alert_phone"
-            android:textColor="@android:color/holo_red_light"
-            android:visibility="@{addContactVM.isValidPhoneNumber() ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintEnd_toEndOf="@+id/editPhone"
-            app:layout_constraintStart_toStartOf="@+id/editPhone"
-            app:layout_constraintTop_toBottomOf="@+id/editPhone" />
+                <ImageView
+                    android:id="@+id/iconLastName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_profile"
+                    app:layout_constraintTop_toBottomOf="@+id/textAlertFirstName" />
 
-        <ImageView
-            android:id="@+id/iconEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:src="@drawable/ic_email"
-            app:layout_constraintTop_toBottomOf="@+id/iconPhone" />
+                <EditText
+                    android:id="@+id/editLastName"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:hint="@string/last_name"
+                    android:text="@={addContactVM.lastName}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iconLastName"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iconLastName"
+                    app:layout_constraintTop_toTopOf="@+id/iconLastName" />
 
-        <EditText
-            android:id="@+id/editEmail"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:hint="@string/email"
-            android:text="@={addContactVM.email}"
-            app:layout_constraintBottom_toBottomOf="@+id/iconEmail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iconEmail"
-            app:layout_constraintTop_toTopOf="@+id/iconEmail" />
+                <TextView
+                    android:id="@+id/textAlertLastName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/alert_last_name"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="@{addContactVM.isValidLastName() ? View.INVISIBLE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/editLastName"
+                    app:layout_constraintStart_toStartOf="@+id/editLastName"
+                    app:layout_constraintTop_toBottomOf="@+id/editLastName" />
 
-        <TextView
-            android:id="@+id/textAlertEmail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/alert_email"
-            android:textColor="@android:color/holo_red_light"
-            android:visibility="@{addContactVM.isValidEmail() ? View.INVISIBLE : View.VISIBLE}"
-            app:layout_constraintEnd_toEndOf="@+id/editEmail"
-            app:layout_constraintStart_toStartOf="@+id/editEmail"
-            app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+                <ImageView
+                    android:id="@+id/iconPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_call_grey"
+                    app:layout_constraintTop_toBottomOf="@+id/textAlertLastName" />
 
-    </android.support.constraint.ConstraintLayout>
+                <EditText
+                    android:id="@+id/editPhone"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:hint="@string/phone"
+                    android:text="@={addContactVM.phoneNumber}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iconPhone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iconPhone"
+                    app:layout_constraintTop_toTopOf="@+id/iconPhone" />
+
+                <TextView
+                    android:id="@+id/textAlertPhone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/alert_phone"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="@{addContactVM.isValidPhoneNumber() ? View.INVISIBLE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/editPhone"
+                    app:layout_constraintStart_toStartOf="@+id/editPhone"
+                    app:layout_constraintTop_toBottomOf="@+id/editPhone" />
+
+                <ImageView
+                    android:id="@+id/iconEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_email"
+                    app:layout_constraintTop_toBottomOf="@+id/textAlertPhone" />
+
+                <EditText
+                    android:id="@+id/editEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:hint="@string/email"
+                    android:text="@={addContactVM.email}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iconEmail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iconEmail"
+                    app:layout_constraintTop_toTopOf="@+id/iconEmail" />
+
+                <TextView
+                    android:id="@+id/textAlertEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@string/alert_email"
+                    android:textColor="@android:color/holo_red_light"
+                    android:visibility="@{addContactVM.isValidEmail() ? View.INVISIBLE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="@+id/editEmail"
+                    app:layout_constraintStart_toStartOf="@+id/editEmail"
+                    app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+
+            </android.support.constraint.ConstraintLayout>
+        </ScrollView>
+
+    </LinearLayout>
 
 </layout>
