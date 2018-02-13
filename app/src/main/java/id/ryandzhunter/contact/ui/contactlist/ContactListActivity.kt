@@ -35,6 +35,7 @@ class ContactListActivity : BaseActivity(), ContactListView {
     }
 
     override fun onResponse(list: List<ContactRealm>?) {
+        rvContact.adapter = null
         rvContact.adapter = list?.let { ContactListAdapter (it) {
             val intent = ContactDetailActivity.newIntent(this, it.id)
             startActivity(intent)

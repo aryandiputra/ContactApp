@@ -160,8 +160,8 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
                 .observeOn(scheduler.ui())
                 .doOnSubscribe({ disposable -> isLoading.set(true) })
                 .doOnTerminate({ isLoading.set(false) })
-                .subscribe({ contacts ->
-                    addNewContactToLocal(contact)
+                .subscribe({ newContact ->
+                    addNewContactToLocal(newContact)
                     view.closeActivity()
                 }, { throwable -> obsError.set(throwable) }))
     }
@@ -213,8 +213,8 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
                 .observeOn(scheduler.ui())
                 .doOnSubscribe({ disposable -> isLoading.set(true) })
                 .doOnTerminate({ isLoading.set(false) })
-                .subscribe({ contacts ->
-                    updateLocalContact(contact)
+                .subscribe({ newContact ->
+                    updateLocalContact(newContact)
                     view.closeActivity()
                 }, { throwable -> obsError.set(throwable) }))
     }

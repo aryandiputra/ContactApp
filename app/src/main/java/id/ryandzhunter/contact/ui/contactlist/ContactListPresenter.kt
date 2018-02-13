@@ -1,14 +1,14 @@
 package id.ryandzhunter.contact.ui.contactlist
 
-import com.vicpin.krealmextensions.deleteAll
-import com.vicpin.krealmextensions.queryAll
-import com.vicpin.krealmextensions.saveAll
+import com.vicpin.krealmextensions.*
 import id.ryandzhunter.contact.api.Endpoints
 import id.ryandzhunter.contact.base.BasePresenter
 import id.ryandzhunter.contact.model.Contact
 import id.ryandzhunter.contact.model.ContactRealm
+import id.ryandzhunter.contact.util.ContactSortComparator
 import id.ryandzhunter.contact.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -31,8 +31,7 @@ class ContactListPresenter @Inject constructor(var api: Endpoints, disposable: C
                             if (contactList == null || contactList.isEmpty()) {
                                 view?.showNoResult()
                             }
-                            val cacheContactList = getLocalDatabase()
-                            view?.onResponse(cacheContactList)
+                            getLocalDatabase()
                         },
                         { _ ->
                             view?.hideProgress()
@@ -53,13 +52,14 @@ class ContactListPresenter @Inject constructor(var api: Endpoints, disposable: C
         contactRealms.saveAll()
     }
 
-    private fun getLocalDatabase() : List<ContactRealm> {
-        val cacheFavoriteContactList = ContactRealm().queryAll()
-                .filter { contactRealm -> contactRealm.favorite == true }
-                .sortedBy { contactRealm -> contactRealm.firstName }
-        val cacheContactList = ContactRealm().queryAll()
-                .filter { contactRealm -> contactRealm.favorite == false }
-                .sortedBy { contactRealm -> contactRealm.firstName }
-        return cacheFavoriteContactList.plus(cacheContactList)
+    private fun getLocalDatabase() {
+        ContactRealm().queryAllAsFlowable()
+                .subscribeOn(scheduler.io())
+                .observeOn(scheduler.ui())
+                .subscribe({contacts ->
+                    Collections.sort(contacts, ContactSortComparator())
+                    view?.onResponse(contacts)
+                })
     }
+
 }

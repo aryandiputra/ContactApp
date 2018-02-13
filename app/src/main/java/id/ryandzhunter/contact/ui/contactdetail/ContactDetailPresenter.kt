@@ -46,14 +46,13 @@ class ContactDetailPresenter @Inject constructor(var api: Endpoints, disposable:
                 .doOnTerminate({ view?.hideProgress() })
                 .subscribe({ contactResult ->
                     view?.updateFavoriteIcon(contactResult.favorite)
-                    updateFavoriteLocalContact(contact)
-                },
-                        { throwable -> }))
+                    updateFavoriteLocalContact(contactResult.favorite)
+                }, { throwable -> }))
     }
 
-    fun updateFavoriteLocalContact(contact: Contact) {
+    fun updateFavoriteLocalContact(favorite: Boolean) {
         var contactRealm : ContactRealm? = ContactRealm().queryFirst { contact.id }
-        contactRealm?.favorite = contact.favorite
+        contactRealm?.favorite = favorite
         contactRealm?.save()
     }
 
