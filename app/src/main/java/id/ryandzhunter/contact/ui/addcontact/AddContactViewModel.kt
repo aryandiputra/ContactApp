@@ -9,10 +9,13 @@ import android.os.Environment
 import android.text.TextUtils
 import android.util.Patterns
 import android.widget.ImageView
+import com.vicpin.krealmextensions.queryFirst
+import com.vicpin.krealmextensions.save
 import id.ryandzhunter.contact.R
 import id.ryandzhunter.contact.api.Endpoints
 import id.ryandzhunter.contact.di.module.GlideApp
 import id.ryandzhunter.contact.model.Contact
+import id.ryandzhunter.contact.model.ContactRealm
 import id.ryandzhunter.contact.util.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.MediaType
@@ -150,7 +153,13 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
                 .observeOn(scheduler.ui())
                 .doOnSubscribe({ disposable -> isLoading.set(true) })
                 .doOnTerminate({ isLoading.set(false) })
-                .subscribe({ contacts -> }, { throwable -> obsError.set(throwable) }))
+                .subscribe({ contacts -> addNewContactToLocal(contact)}, { throwable -> obsError.set(throwable) }))
+    }
+
+    fun addNewContactToLocal(contact: Contact){
+        ContactRealm(contact.id, contact.firstName, contact.lastName, contact.email,
+                contact.phoneNumber, contact.profilePic, contact.favorite, contact.createAt,
+                contact.updateAt).save()
     }
 
     private fun addNewContactWithPhoto(photo: Bitmap?) {
@@ -194,7 +203,21 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
                 .observeOn(scheduler.ui())
                 .doOnSubscribe({ disposable -> isLoading.set(true) })
                 .doOnTerminate({ isLoading.set(false) })
-                .subscribe({ contacts -> }, { throwable -> obsError.set(throwable) }))
+                .subscribe({ contacts ->
+                    updateLocalContact(contact)
+                }, { throwable -> obsError.set(throwable) }))
+    }
+
+    fun updateLocalContact(contact: Contact) {
+        var contactRealm : ContactRealm? = ContactRealm().queryFirst { contact.id }
+        contactRealm?.firstName = contact.firstName
+        contactRealm?.lastName = contact.lastName
+        contactRealm?.phoneNumber = contact.phoneNumber
+        contactRealm?.email = contact.email
+        contactRealm?.favorite = contact.favorite
+        contactRealm?.createAt = contact.createAt
+        contactRealm?.updateAt = contact.updateAt
+        contactRealm?.save()
     }
 
     fun setPhotoBitmap(photoBitmap: Bitmap) {
