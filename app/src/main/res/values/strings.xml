@@ -17,7 +17,6 @@
     <string name="toolbar_edit_title">Edit contact</string>
     <string name="choose_image">Choose Image</string>
     <string name="mobile">Mobile</string>
-    <string name="email">Email</string>
     <string-array name="array_share_contact">
         <item>Share as a Text</item>
         <item>Share as a Contact</item>
