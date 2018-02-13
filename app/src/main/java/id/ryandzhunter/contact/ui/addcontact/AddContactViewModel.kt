@@ -43,6 +43,13 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
     private lateinit var view: AddContactView
     private var photoBitmap: Bitmap? = null
 
+    init {
+        isValidFirstName.set(false)
+        isValidLastName.set(false)
+        isValidPhoneNumber.set(false)
+        isValidEmail.set(false)
+    }
+
     fun initContact(contact: Contact) {
         this.contact = contact
         contact.let { setValidityFlag(it) }
@@ -153,7 +160,10 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
                 .observeOn(scheduler.ui())
                 .doOnSubscribe({ disposable -> isLoading.set(true) })
                 .doOnTerminate({ isLoading.set(false) })
-                .subscribe({ contacts -> addNewContactToLocal(contact)}, { throwable -> obsError.set(throwable) }))
+                .subscribe({ contacts ->
+                    addNewContactToLocal(contact)
+                    view.closeActivity()
+                }, { throwable -> obsError.set(throwable) }))
     }
 
     fun addNewContactToLocal(contact: Contact){
@@ -205,6 +215,7 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
                 .doOnTerminate({ isLoading.set(false) })
                 .subscribe({ contacts ->
                     updateLocalContact(contact)
+                    view.closeActivity()
                 }, { throwable -> obsError.set(throwable) }))
     }
 
@@ -226,6 +237,10 @@ class AddContactViewModel @Inject constructor(var api: Endpoints, var disposable
 
     private fun getAllValidation(): Boolean {
         return isValidLastName.get() && isValidLastName.get() && isValidEmail.get() && isValidPhoneNumber.get()
+    }
+
+    fun onDestroy(){
+        disposable.clear()
     }
 
 }

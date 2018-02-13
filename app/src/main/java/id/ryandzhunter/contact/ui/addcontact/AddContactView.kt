@@ -5,4 +5,5 @@ package id.ryandzhunter.contact.ui.addcontact
  */
 interface AddContactView {
     fun openChoosePhotoDialog()
+    fun closeActivity()
 }

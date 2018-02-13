@@ -128,7 +128,7 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
                 }).create().show()
     }
 
-    fun closeActivity() {
+    override fun closeActivity() {
         finish()
     }
 
@@ -202,6 +202,11 @@ class AddContactActivity : AppCompatActivity(), AddContactView {
             }
         }
         return null
+    }
+
+    override fun onDestroy() {
+        binding.addContactVM?.onDestroy()
+        super.onDestroy()
     }
 
 }

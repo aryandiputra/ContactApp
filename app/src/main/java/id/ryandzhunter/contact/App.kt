@@ -2,6 +2,7 @@ package id.ryandzhunter.contact
 
 import android.app.Activity
 import android.app.Application
+import com.squareup.leakcanary.LeakCanary
 import id.ryandzhunter.contact.di.component.AppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -26,6 +27,7 @@ class App: Application(), HasActivityInjector {
         appComponent = createComponent()
         appComponent.inject(this)
         Realm.init(this)
+        LeakCanary.install(this);
     }
 
     fun createComponent(): AppComponent {
