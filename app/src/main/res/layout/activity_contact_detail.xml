@@ -19,6 +19,8 @@
         android:layout_marginBottom="13dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:textSize="28sp"
+        android:text="Betty Allen"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/imageAvatar"
         app:layout_constraintStart_toStartOf="parent" />
@@ -80,7 +82,8 @@
                 android:paddingTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@+id/buttonCall" />
+                app:layout_constraintStart_toEndOf="@+id/buttonCall"
+                android:textColor="@color/black87"/>
 
             <TextView
                 android:id="@+id/labelMobile"
@@ -89,7 +92,8 @@
                 android:paddingBottom="5dp"
                 android:text="@string/mobile"
                 app:layout_constraintStart_toStartOf="@+id/textMobile"
-                app:layout_constraintTop_toBottomOf="@+id/textMobile" />
+                app:layout_constraintTop_toBottomOf="@+id/textMobile"
+                android:textColor="@color/black54"/>
 
             <View
                 android:id="@+id/lines"
@@ -118,7 +122,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@+id/buttonEmail"
-                app:layout_constraintTop_toBottomOf="@+id/lines" />
+                app:layout_constraintTop_toBottomOf="@+id/lines"
+                android:textColor="@color/black87"/>
 
             <TextView
                 android:id="@+id/labelEmail"
@@ -127,7 +132,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/email"
                 app:layout_constraintStart_toStartOf="@+id/textEmail"
-                app:layout_constraintTop_toBottomOf="@+id/textEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/textEmail"
+                android:textColor="@color/black54"/>
 
             <ImageView
                 android:id="@+id/buttonMessage"
